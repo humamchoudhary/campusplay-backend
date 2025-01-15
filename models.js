@@ -1,5 +1,5 @@
 // models.js
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const adminSchema = new mongoose.Schema({
   username: String,
@@ -37,19 +37,19 @@ const repSchema = new mongoose.Schema({
 });
 
 const admingpostSchema = new mongoose.Schema({
-    adminpostdescription :String,
-    adminimagepost: String,
-    adminpostuserId: {type: mongoose.Schema.Types.ObjectId,ref: 'DSAUser'},
-    adminpostusername: String,
-    adminpostemail: String,
-    postedAt: {type: Date,default: Date.now},
-  });
-  // Sports Rules Schema
+  adminpostdescription: String,
+  adminimagepost: String,
+  adminpostuserId: { type: mongoose.Schema.Types.ObjectId, ref: "DSAUser" },
+  adminpostusername: String,
+  adminpostemail: String,
+  postedAt: { type: Date, default: Date.now },
+});
+// Sports Rules Schema
 const sportsRulesSchema = new mongoose.Schema({
-    sport: { type: String, unique: true, required: true },
-    rules: { type: String, required: true },
-    lastUpdatedBy: { type: String, required: true }, // Email or username of the last updater
-    updatedAt: { type: Date, default: Date.now },
+  sport: { type: String, unique: true, required: true },
+  rules: { type: String, required: true },
+  lastUpdatedBy: { type: String, required: true }, // Email or username of the last updater
+  updatedAt: { type: Date, default: Date.now },
 });
 
 const playerNominationSchema = new mongoose.Schema({
@@ -60,7 +60,7 @@ const playerNominationSchema = new mongoose.Schema({
       name: { type: String, required: true },
       cnic: { type: String, required: true },
       section: { type: String, required: true },
-    }
+    },
   ],
   repId: { type: String, required: true },
   repName: { type: String, required: true },
@@ -76,7 +76,11 @@ const trialEventSchema = new mongoose.Schema({
   time: { type: String, required: true }, // Time in AM/PM format
   hour: { type: Number, required: true }, // Hour (1-12)
   minute: { type: Number, required: true }, // Minute (0-59)
-  repId: { type: mongoose.Schema.Types.ObjectId, ref: 'RepUser', required: true },
+  repId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "RepUser",
+    required: true,
+  },
   repName: { type: String, required: true },
   department: { type: String, required: true },
   isConfirmed: { type: Boolean, default: false }, // Green tick
@@ -90,7 +94,11 @@ const captainSchema = new mongoose.Schema({
   loggedin: { type: String, default: "captain" },
   category: { type: String, required: true }, // Sports category (e.g., Volleyball, Football)
   department: { type: String, required: true }, // Department of the captain
-  repId: { type: mongoose.Schema.Types.ObjectId, ref: 'RepUser', required: true }, // Ref to the representative who created the captain
+  repId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "RepUser",
+    required: true,
+  }, // Ref to the representative who created the captain
   repEmail: { type: String, required: true }, // Email of the representative
   repName: { type: String, required: true }, // Name of the representative
   createdAt: { type: Date, default: Date.now }, // Timestamp of captain creation
@@ -118,7 +126,6 @@ const poolsSchema = new mongoose.Schema({
   year: { type: String, required: true }, // Year of pool creation
 });
 
-
 const schedulesSchema = new mongoose.Schema({
   pool: { type: String, required: true }, // Pool A or Pool B
   team1: { type: String, required: true },
@@ -128,27 +135,41 @@ const schedulesSchema = new mongoose.Schema({
   scoreT1: { type: Number, default: 0 }, // Score for Team 1
   scoreT2: { type: Number, default: 0 }, // Score for Team 2
   result: { type: String, default: null }, // Result of the match (null by default)
-  status: { type: String, default: 'upcoming' }, // Status of the match (upcoming by default)
+  status: { type: String, default: "upcoming" }, // Status of the match (upcoming by default)
   T1wickets: { type: Number, default: 0 }, // Wickets for Team 1 (for cricket)
   T2wickets: { type: Number, default: 0 }, // Wickets for Team 2 (for cricket)
   year: { type: String, required: true }, // Year of the match
 });
 
-
-
-const DSAUser = mongoose.model('DSAUser', adminSchema);
-const SportsCoachUser = mongoose.model('SportsCoachUser', coachSchema);
-const CoordinatorUser = mongoose.model('CoordinatorUser', coordinatorSchema);
-const RepUser = mongoose.model('RepUser', repSchema);
-const RefUser = mongoose.model('RefUser', refSchema);
-const CaptainUser = mongoose.model('CaptainUser', captainSchema);
-const AdminPost = mongoose.model('AdminPost', admingpostSchema);
-const SportsRules = mongoose.model('SportsRules', sportsRulesSchema);
-const PlayerNominationForm = mongoose.model('PlayerNominationForm', playerNominationSchema);
-const TrialEvent = mongoose.model('TrialEvent', trialEventSchema);
-const TeamRankings = mongoose.model('TeamRankings', rankingSchema);
+const DSAUser = mongoose.model("DSAUser", adminSchema);
+const SportsCoachUser = mongoose.model("SportsCoachUser", coachSchema);
+const CoordinatorUser = mongoose.model("CoordinatorUser", coordinatorSchema);
+const RepUser = mongoose.model("RepUser", repSchema);
+const RefUser = mongoose.model("RefUser", refSchema);
+const CaptainUser = mongoose.model("CaptainUser", captainSchema);
+const AdminPost = mongoose.model("AdminPost", admingpostSchema);
+const SportsRules = mongoose.model("SportsRules", sportsRulesSchema);
+const PlayerNominationForm = mongoose.model(
+  "PlayerNominationForm",
+  playerNominationSchema,
+);
+const TrialEvent = mongoose.model("TrialEvent", trialEventSchema);
+const TeamRankings = mongoose.model("TeamRankings", rankingSchema);
 const Pools = mongoose.model("Pools", poolsSchema);
 const Schedules = mongoose.model("Schedules", schedulesSchema);
 
-
-module.exports = { DSAUser, SportsCoachUser, CoordinatorUser, RepUser, AdminPost, SportsRules, PlayerNominationForm, TrialEvent, CaptainUser, TeamRankings, Pools, Schedules, RefUser };
+module.exports = {
+  DSAUser,
+  SportsCoachUser,
+  CoordinatorUser,
+  RepUser,
+  AdminPost,
+  SportsRules,
+  PlayerNominationForm,
+  TrialEvent,
+  CaptainUser,
+  TeamRankings,
+  Pools,
+  Schedules,
+  RefUser,
+};
