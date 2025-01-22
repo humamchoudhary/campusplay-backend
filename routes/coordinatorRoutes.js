@@ -58,6 +58,7 @@ router.post("/login", async (req, res) => {
   const { email, password } = req.body;
   if (email && password) {
     const user = await CoordinatorUser.findOne({ email });
+    console.log(user);
     if (user && (await bcrypt.compare(password, user.password))) {
       // Generate JWT token
       const token = jwt.sign(

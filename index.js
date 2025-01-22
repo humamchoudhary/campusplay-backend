@@ -32,7 +32,7 @@ mongoose
 
 app.use(morgan("combined"));
 // Route middleware
-app.use("/dsa/", dsaRoutes);
+app.use("/admin/", dsaRoutes);
 app.use("/coach/", coachRoutes);
 app.use("/coordinator/", coordinatorRoutes);
 app.use("/rep/", studentrepRoutes);
