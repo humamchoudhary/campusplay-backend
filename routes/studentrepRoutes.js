@@ -283,7 +283,7 @@ router.get("/downloadPDF/:sport", authenticateJWT, async (req, res) => {
   }
 });
 
-router.post("/createTrialEvent", authenticateJWT, async (req, res) => {
+router.post("/createtrial", authenticateJWT, async (req, res) => {
   const { sportCategory, hour, minute, time, date } = req.body;
   const repId = req.user.id;
   const repName = req.user.username;
@@ -328,7 +328,7 @@ router.post("/createTrialEvent", authenticateJWT, async (req, res) => {
 });
 
 // Delete an event
-router.delete("/deleteTrialEvent/:id", authenticateJWT, async (req, res) => {
+router.delete("/deletetrial/:id", authenticateJWT, async (req, res) => {
   try {
     const event = await TrialEvent.findById(req.params.id);
 
@@ -356,7 +356,21 @@ router.delete("/deleteTrialEvent/:id", authenticateJWT, async (req, res) => {
 });
 
 // Get all events for the logged-in user
-router.get("/getMyTrialEvents", authenticateJWT, async (req, res) => {
+router.get("/completedtrial", authenticateJWT, async (req, res) => {
+  try {
+    const events = await TrialEvent.find({
+      department: req.user.department,
+      isConfirmed: true,
+    });
+
+    res.json({ success: true, events });
+  } catch (error) {
+    console.error("Error fetching events:", error);
+    res.status(500).json({ success: false, error: "Error fetching events" });
+  }
+});
+
+router.get("/listtrial", authenticateJWT, async (req, res) => {
   try {
     const events = await TrialEvent.find({ department: req.user.department });
 

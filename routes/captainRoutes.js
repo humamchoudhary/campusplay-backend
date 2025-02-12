@@ -11,29 +11,30 @@ const router = express.Router();
 // Captain signup route
 router.post("/create", authenticateJWT, async (req, res) => {
   try {
-    const { name, email, password, category } = req.body;
+    console.log(req);
+    const { username, email, password, category, department } = req.body;
 
-    if (!name || !email || !password || !category) {
+    if (!username || !email || !password || !category) {
       return res
         .status(400)
         .json({ success: false, error: "All fields are required" });
     }
 
     const existingCaptain = await CaptainUser.findOne({
-      department: req.user.department,
+      department: department,
       category,
     });
-
+    console.log(department);
     if (existingCaptain) {
       return res.status(400).json({
         success: false,
-        error: `A captain for ${category} already exists in the ${req.user.department} department.`,
+        error: `A captain for ${category} already exists in the ${department} department.`,
       });
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
     const newCaptain = new CaptainUser({
-      name,
+      name: username,
       email,
       password: hashedPassword,
       category,
@@ -42,7 +43,7 @@ router.post("/create", authenticateJWT, async (req, res) => {
       repEmail: req.user.email,
       repName: req.user.username,
     });
-
+    console.log(newCaptain);
     const savedCaptain = await newCaptain.save();
     res.status(201).json({ success: true, captain: savedCaptain });
   } catch (error) {
