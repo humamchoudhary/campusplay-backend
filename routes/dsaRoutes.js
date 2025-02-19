@@ -61,13 +61,13 @@ router.get("/", authenticateJWT, async (req, res) => {
 });
 
 router.post("/post", authenticateJWT, async (req, res) => {
-  const { adminpostdescription, adminimagepost } = req.body; // Receive post data
+  const { postData, postImage } = req.body; // Receive post data
   const { username, email, id } = req.user; // Get user info from JWT
 
   try {
     const newPost = new AdminPost({
-      adminpostdescription,
-      adminimagepost,
+      postData,
+      postImage,
       adminpostuserId: id,
       adminpostusername: username,
       adminpostemail: email,
@@ -85,14 +85,14 @@ router.post("/post", authenticateJWT, async (req, res) => {
   }
 });
 
-router.put("/post/:id", authenticateJWT, async (req, res) => {
+router.post("/post/:id", authenticateJWT, async (req, res) => {
   const { id } = req.params;
-  const { adminpostdescription, adminimagepost } = req.body;
+  const { caption, image } = req.body;
 
   try {
     const updatedPost = await AdminPost.findOneAndUpdate(
       { _id: id, adminpostuserId: req.user.id }, // Ensure the user can only update their own posts
-      { adminpostdescription, adminimagepost },
+      { postData: { caption: caption }, postImage: image },
       { new: true }, // Return the updated document
     );
 

@@ -11,10 +11,10 @@ const captainRoutes = require("./routes/captainRoutes");
 const feedscreen = require("./routes/feedscreen");
 const refRoutes = require("./routes/refRoutes");
 const authRoutes = require("./routes/auth");
-
+const path = require("path");
 const morgan = require("morgan");
-const app = express();
 
+const app = express();
 // Middleware for CORS and JSON parsing
 app.use(
   cors({
@@ -22,8 +22,23 @@ app.use(
     credentials: true,
   }),
 );
-app.use(express.json());
+app.use(express.json({ limit: "10mb" }));
 
+const imageFolder = path.join(__dirname, "public/images");
+
+app.use("/images", express.static(imageFolder));
+
+// Example route to fetch an image
+app.get("/image/:filename", (req, res) => {
+  const filename = req.params.filename;
+  const filePath = path.join(imageFolder, filename);
+
+  res.sendFile(filePath, (err) => {
+    if (err) {
+      res.status(404).send("Image not found");
+    }
+  });
+});
 // MongoDB connection
 mongoose
   .connect(config.MONGO_URI)

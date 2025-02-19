@@ -37,19 +37,24 @@ const repSchema = new mongoose.Schema({
 });
 
 const admingpostSchema = new mongoose.Schema({
-  adminpostdescription: String,
-  adminimagepost: String,
+  postData: {
+    caption: String,
+    likes: { type: Number, default: 0 },
+    comments: { type: Number, default: 0 },
+    shares: { type: Number, default: 0 },
+  },
+  postImage: String,
   adminpostuserId: { type: mongoose.Schema.Types.ObjectId, ref: "DSAUser" },
   adminpostusername: String,
   adminpostemail: String,
-  postedAt: { type: Date, default: Date.now },
+  postedAt: { type: Number, default: () => Math.floor(Date.now() / 1000) },
 });
 // Sports Rules Schema
 const sportsRulesSchema = new mongoose.Schema({
   sport: { type: String, unique: true, required: true },
   rules: { type: String, required: true },
   lastUpdatedBy: { type: String, required: true }, // Email or username of the last updater
-  updatedAt: { type: Date, default: Date.now },
+  updatedAt: { type: Date, default: () => Math.floor(Date.now() / 1000) },
 });
 
 const playerNominationSchema = new mongoose.Schema({
